@@ -2,11 +2,9 @@ package com.example.pulse_feed_kotlin.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -24,7 +22,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.pulse_feed_kotlin.services.AudioPlayerService
@@ -36,7 +34,8 @@ fun AudioPlayerCard(
     title: String,
     modifier: Modifier = Modifier
 ) {
-    val audioService = remember { AudioPlayerService(androidx.compose.ui.platform.LocalContext.current) }
+    val context = LocalContext.current
+    val audioService = remember { AudioPlayerService(context) }
     val isPlaying = remember { mutableStateOf(false) }
     val currentPosition = remember { mutableFloatStateOf(0f) }
     val duration = remember { mutableFloatStateOf(1f) }
