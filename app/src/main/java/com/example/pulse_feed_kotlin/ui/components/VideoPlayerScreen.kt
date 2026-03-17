@@ -32,9 +32,8 @@ fun VideoPlayerScreen(
 ) {
     val context = LocalContext.current
     val videoService = remember { VideoPlayerService(context) }
-    val isPlaying = remember { mutableStateOf(false) }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(videoUrl) {
         videoService.loadVideo(videoUrl)
     }
 

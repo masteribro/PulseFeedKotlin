@@ -17,6 +17,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -40,14 +41,24 @@ fun AudioPlayerCard(
     val isPlaying = remember { mutableStateOf(false) }
     val currentPosition = remember { mutableFloatStateOf(0f) }
     val duration = remember { mutableFloatStateOf(1f) }
+    val isLoaded = remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
-        audioService.loadAudio(audioUrl)
-        duration.floatValue = audioService.getDuration().toFloat()
+        audioService.loadAudio(audioUrl) {
+            isLoaded.value = true
+            duration.floatValue = audioService.getDuration().toFloat()
+        }
+    }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            audioService.pause()
+            audioService.release()
+        }
     }
 
     LaunchedEffect(isPlaying.value) {
-        if (isPlaying.value) {
+        if (isPlaying.value && isLoaded.value) {
             audioService.play()
             while (isPlaying.value) {
                 currentPosition.floatValue = audioService.getCurrentPosition().toFloat()
@@ -77,8 +88,9 @@ fun AudioPlayerCard(
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             IconButton(
-                onClick = { isPlaying.value = !isPlaying.value },
-                modifier = Modifier.size(48.dp)
+                onClick = { isPlaying.value = !isPlaying.value && isLoaded.value },
+                modifier = Modifier.size(48.dp),
+                enabled = isLoaded.value
             ) {
                 Icon(
                     imageVector = if (isPlaying.value) Icons.Default.Adjust else Icons.Default.PlayArrow,
@@ -95,7 +107,8 @@ fun AudioPlayerCard(
                         currentPosition.floatValue = it
                         audioService.seekTo(it.toInt())
                     },
-                    valueRange = 0f..duration.floatValue,
+                    valueRange = 0f..maxOf(1f, duration.floatValue),
+                    enabled = isLoaded.value,
                     modifier = Modifier.fillMaxWidth()
                 )
                 Row(
@@ -110,7 +123,7 @@ fun AudioPlayerCard(
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Text(
-                        text = formatTime(duration.floatValue.toInt()),
+                        text = if (isLoaded.value) formatTime(duration.floatValue.toInt()) else "--:--",
                         fontSize = 12.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
