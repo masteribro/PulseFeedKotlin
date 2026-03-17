@@ -61,6 +61,10 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.activity.compose)
     
+    // Lifecycle & ViewModel
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    
     // Room Database
     implementation(libs.androidx.room.runtime)
     annotationProcessor(libs.androidx.room.compiler)
