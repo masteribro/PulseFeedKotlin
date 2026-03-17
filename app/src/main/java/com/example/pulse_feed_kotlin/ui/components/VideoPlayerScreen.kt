@@ -5,11 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Pause
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -32,14 +28,22 @@ fun VideoPlayerScreen(
 ) {
     val context = LocalContext.current
     val videoService = remember { VideoPlayerService(context) }
+    val isLoading = remember { mutableStateOf(true) }
 
     LaunchedEffect(videoUrl) {
-        videoService.loadVideo(videoUrl)
+        try {
+            videoService.loadVideo(videoUrl)
+            isLoading.value = false
+        } catch (e: Exception) {
+            e.printStackTrace()
+            isLoading.value = false
+        }
     }
 
     DisposableEffect(Unit) {
         onDispose {
-            videoService.release()
+            // Don't release here - let it play in the background if user leaves
+            // videoService.release()
         }
     }
 
@@ -55,9 +59,20 @@ fun VideoPlayerScreen(
                 PlayerView(context).apply {
                     player = videoService.getExoPlayer()
                     useController = true
+                    controllerShowTimeoutMs = 5000
+                    controllerHideTimeoutMs = 5000
                 }
             },
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            update = { playerView ->
+                playerView.player = videoService.getExoPlayer()
+            }
         )
+
+        if (isLoading.value) {
+            CircularProgressIndicator(
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
     }
 }

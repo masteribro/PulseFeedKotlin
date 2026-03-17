@@ -47,10 +47,11 @@ fun FeedItemCard(feedItem: FeedItem, modifier: Modifier = Modifier) {
                 }
             }
             MediaType.DOCUMENT -> {
-                Text(
-                    text = "📄 Document",
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.padding(bottom = 12.dp)
+                DocumentViewer(
+                    fileName = feedItem.fileName,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 12.dp)
                 )
             }
             MediaType.TEXT -> {
