@@ -8,8 +8,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Adjust
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Pause
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -80,9 +81,9 @@ fun AudioPlayerCard(
                 modifier = Modifier.size(48.dp)
             ) {
                 Icon(
-                    imageVector = if (isPlaying.value) Icons.Default.Pause else Icons.Default.PlayArrow,
+                    imageVector = if (isPlaying.value) Icons.Default.Adjust else Icons.Default.PlayArrow,
                     contentDescription = if (isPlaying.value) "Pause" else "Play",
-                    tint = MaterialTheme.colorScheme.primary,
+                    tint = MaterialTheme.colorScheme.error,
                     modifier = Modifier.size(32.dp)
                 )
             }
