@@ -1,5 +1,5 @@
 package com.example.pulse_feed_kotlin.models
-
+import kotlinx.parcelize.Parcelize
 import android.os.Parcelable
 import java.util.UUID
 
