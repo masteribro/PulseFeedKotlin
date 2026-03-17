@@ -59,8 +59,6 @@ fun VideoPlayerScreen(
                 PlayerView(context).apply {
                     player = videoService.getExoPlayer()
                     useController = true
-                    controllerShowTimeoutMs = 5000
-                    controllerHideTimeoutMs = 5000
                 }
             },
             modifier = Modifier.fillMaxSize(),
