@@ -2,7 +2,6 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
@@ -65,6 +64,9 @@ dependencies {
     // Lifecycle & ViewModel
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.lifecycle.runtime.compose)
+    
+    // Parcelize
+    implementation(libs.kotlinx.parcelize)
     
     // Room Database
     implementation(libs.androidx.room.runtime)
