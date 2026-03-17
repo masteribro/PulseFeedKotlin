@@ -22,9 +22,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val viewModel: HomeViewModel = viewModel(
-                        factory = HomeViewModel.provideFactory(this)
-                    )
+                    val viewModel: HomeViewModel = viewModel()
                     HomeScreen(viewModel = viewModel)
                 }
             }
